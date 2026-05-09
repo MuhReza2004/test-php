@@ -45,10 +45,14 @@
                     harga_jual = Math.round(harga_jual)
                     var kode = item.kode;
 
+                    var foto_url = item.foto ? '{{asset("foto")}}/' + item.foto : 'https://via.placeholder.com/50';
+                    var html_foto = `<img src="` + foto_url + `" width="50" height="50" style="object-fit: cover;">`;
+
                     var html = `<a href="{{url('master-items/view/')}}/` + kode + `" class="btn btn-primary">View</a>`
 
+                    array_temp.push(html_foto)
                     $.each(item, function(obj_name, obj_value) {
-                        if (obj_name == 'laba') return false;
+                        if (obj_name == 'laba' || obj_name == 'foto') return true;
                         array_temp.push(obj_value)
                     })
                     array_temp.push(harga_jual)

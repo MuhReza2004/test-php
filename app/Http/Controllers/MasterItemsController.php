@@ -25,7 +25,7 @@ class MasterItemsController extends Controller
         if (!empty($nama)) $data_search = $data_search->where('nama', 'LIKE', '%' . $nama . '%');
         if (!empty($hargamin)) $data_search = $data_search->where('harga_beli', '>=', $hargamin)->where('harga_beli', '<=', $hargamax);
 
-        $data_search = $data_search->select('kode', 'nama', 'jenis', 'harga_beli', 'laba', 'supplier')->orderBy('id')->get();
+        $data_search = $data_search->select('kode', 'nama', 'jenis', 'harga_beli', 'laba', 'supplier', 'foto')->orderBy('id')->get();
 
 
         return json_encode([
@@ -54,6 +54,15 @@ class MasterItemsController extends Controller
 
     public function formSubmit(Request $request, $method, $id = 0)
     {
+        $request->validate([
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nama' => 'required',
+            'harga_beli' => 'required|numeric',
+            'laba' => 'required|numeric',
+            'supplier' => 'required',
+            'jenis' => 'required',
+        ]);
+
         if ($method == 'new') {
             $data_item = new MasterItem;
             $kode = MasterItem::count('id');
@@ -63,6 +72,13 @@ class MasterItemsController extends Controller
         } else {
             $data_item = MasterItem::find($id);
             $kode = $data_item->kode;
+        }
+
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $filename = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('foto'), $filename);
+            $data_item->foto = $filename;
         }
 
         $data_item->nama = $request->nama;
