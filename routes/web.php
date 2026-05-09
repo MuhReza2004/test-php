@@ -37,6 +37,7 @@ Route::prefix('categories')->group(function () {
     Route::get('/form/{method}/{id?}', [CategoryController::class, 'formView']);
     Route::post('/form/{method}/{id?}', [CategoryController::class, 'formSubmit']);
     Route::get('/view/{id}', [CategoryController::class, 'singleView']);
+    Route::get('/print-pdf/{id}', [CategoryController::class, 'printPDF']);
     Route::get('/delete/{id}', [CategoryController::class, 'delete']);
 });
 

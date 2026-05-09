@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\MasterItem;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CategoryController extends Controller
 {
@@ -45,6 +46,17 @@ class CategoryController extends Controller
             return redirect('categories')->with('error', 'Kategori tidak ditemukan');
         }
         return view('categories.single.index', $data);
+    }
+
+    public function printPDF($id)
+    {
+        $category = Category::with('masterItems')->find($id);
+        if (!$category) {
+            return redirect('categories')->with('error', 'Kategori tidak ditemukan');
+        }
+
+        $pdf = Pdf::loadView('categories.single.pdf', compact('category'));
+        return $pdf->download('Kategori-' . $category->kode . '.pdf');
     }
 
     public function formSubmit(Request $request, $method, $id = 0)

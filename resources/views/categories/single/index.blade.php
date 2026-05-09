@@ -4,8 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <div class="mb-3">
+            <div class="mb-3 d-flex justify-content-between">
                 <a href="{{ url('categories') }}" class="btn btn-secondary">Kembali ke Daftar</a>
+                <a href="{{ url('categories/print-pdf/'.$category->id) }}" class="btn btn-danger">Download PDF</a>
             </div>
 
             <div class="card mb-4">
