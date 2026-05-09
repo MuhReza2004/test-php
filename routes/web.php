@@ -29,5 +29,15 @@ Route::post('/master-items/form/{method}/{id?}', [App\Http\Controllers\MasterIte
 Route::get('/master-items/view/{kode}', [App\Http\Controllers\MasterItemsController::class, 'singleView']);
 Route::get('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsController::class, 'delete']);
 
+use App\Http\Controllers\CategoryController;
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/search', [CategoryController::class, 'search']);
+    Route::get('/form/{method}/{id?}', [CategoryController::class, 'formView']);
+    Route::post('/form/{method}/{id?}', [CategoryController::class, 'formSubmit']);
+    Route::get('/view/{id}', [CategoryController::class, 'singleView']);
+    Route::get('/delete/{id}', [CategoryController::class, 'delete']);
+});
 
 Route::get('/master-items/update-random-data', [App\Http\Controllers\MasterItemsController::class, 'updateRandomData']);

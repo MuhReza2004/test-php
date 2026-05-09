@@ -22,6 +22,22 @@
         <input type="number" class="form-control" name="laba" required  value="{{$item->laba ?? ''}}">
     </div>
 
+    <div class="form-group mb-3">
+        <label class="d-block">Categories (Bisa pilih banyak)</label>
+        <div class="card p-2" style="max-height: 150px; overflow-y: auto;">
+            @foreach($categories as $category)
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}" id="cat{{ $category->id }}"
+                        @if(in_array($category->id, old('categories', $item->categories->pluck('id')->toArray()))) checked @endif>
+                    <label class="form-check-label" for="cat{{ $category->id }}">
+                        {{ $category->nama }} ({{ $category->kode }})
+                    </label>
+                </div>
+            @endforeach
+        </div>
+        <small class="text-muted">Centang kategori yang sesuai untuk barang ini.</small>
+    </div>
+
     <div>
         <label>Foto</label>
         <input type="file" class="form-control" name="foto" @if($method == 'new') required @endif>

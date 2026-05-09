@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterItem;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class MasterItemsController extends Controller
@@ -19,18 +20,14 @@ class MasterItemsController extends Controller
         $hargamin = $request->hargamin;
         $hargamax = $request->hargamax;
 
-        $data_search = MasterItem::query();
+        $data_search = MasterItem::with('categories');
 
         if (!empty($kode)) $data_search = $data_search->where('kode', $kode);
         if (!empty($nama)) $data_search = $data_search->where('nama', 'LIKE', '%' . $nama . '%');
-        if (!empty($hargamin)) {
-            $data_search = $data_search->where('harga_beli', '>=', $hargamin);
-        }
-        if (!empty($hargamax)) {
-            $data_search = $data_search->where('harga_beli', '<=', $hargamax);
-        }
+        if (!empty($hargamin)) $data_search = $data_search->where('harga_beli', '>=', $hargamin);
+        if (!empty($hargamax)) $data_search = $data_search->where('harga_beli', '<=', $hargamax);
 
-        $data_search = $data_search->select('kode', 'nama', 'jenis', 'harga_beli', 'laba', 'supplier', 'foto')->orderBy('id')->get();
+        $data_search = $data_search->orderBy('id')->get();
 
 
         return json_encode([
@@ -42,12 +39,13 @@ class MasterItemsController extends Controller
     public function formView($method, $id = 0)
     {
         if ($method == 'new') {
-            $item = [];
+            $item = new MasterItem;
         } else {
-            $item = MasterItem::find($id);
+            $item = MasterItem::with('categories')->find($id);
         }
         $data['item'] = $item;
         $data['method'] = $method;
+        $data['categories'] = Category::all();
         return view('master_items.form.index', $data);
     }
 
@@ -93,6 +91,7 @@ class MasterItemsController extends Controller
         $data_item->supplier = $request->supplier;
         $data_item->jenis = $request->jenis;
         $data_item->save();
+        $data_item->categories()->sync($request->categories);
 
         return redirect('master-items');
     }

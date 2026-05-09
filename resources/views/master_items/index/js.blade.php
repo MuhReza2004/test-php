@@ -45,27 +45,37 @@
                 var data = results.data
 
                 $.each(data, function(index, item) {
-                    array_temp = [];
-                    var harga_jual = item.harga_beli + item.harga_beli * item.laba / 100;
-                    harga_jual = Math.round(harga_jual)
+                    var harga_jual = Math.round(item.harga_beli + item.harga_beli * item.laba / 100);
                     var kode = item.kode;
 
                     var foto_url = item.foto ? '{{asset("foto")}}/' + item.foto : 'https://via.placeholder.com/50';
                     var html_foto = `<img src="` + foto_url + `" width="50" height="50" style="object-fit: cover;">`;
 
-                    var html = `<a href="{{url('master-items/view/')}}/` + kode + `" class="btn btn-primary">View</a>`
+                    var categories_html = '';
+                    if (item.categories && item.categories.length > 0) {
+                        var names = item.categories.map(function(cat) {
+                            return `<span class="badge bg-info text-dark">` + cat.nama + `</span>`;
+                        });
+                        categories_html = names.join(' ');
+                    } else {
+                        categories_html = '-';
+                    }
 
-                    array_temp.push(html_foto)
-                    $.each(item, function(obj_name, obj_value) {
-                        if (obj_name == 'laba' || obj_name == 'foto') return true;
-                        array_temp.push(obj_value)
-                    })
-                    array_temp.push(harga_jual)
-                    array_temp.push(item.supplier)
-                    array_temp.push(html)
+                    var html_view = `<a href="{{url('master-items/view/')}}/` + kode + `" class="btn btn-sm btn-primary">View</a>`;
 
+                    var row = [
+                        html_foto,
+                        item.kode,
+                        item.nama,
+                        categories_html,
+                        item.jenis,
+                        item.harga_beli,
+                        harga_jual,
+                        item.supplier,
+                        html_view
+                    ];
 
-                    dataTableObj.row.add(array_temp).draw(true);
+                    dataTableObj.row.add(row).draw(true);
                 });
                 $('#loading-filter').hide();
             },
