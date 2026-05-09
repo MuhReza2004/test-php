@@ -30,7 +30,7 @@
                         <tr>
                             <th>Harga Jual</th>
                             <td>:</td>
-                            <td>{{$data->harga_beli + $data->harga_beli * $data->laba / 100 }}</td>
+                            <td>{{ $data->harga_jual }}</td>
                         </tr>
                         <tr>
                             <th>Supplier</th>
@@ -46,11 +46,7 @@
                             <th>Foto</th>
                             <td>:</td>
                             <td>
-                                @if($data->foto)
-                                <img src="{{asset('foto/'.$data->foto)}}" width="200" alt="Foto Item">
-                                @else
-                                <span>Tidak ada foto</span>
-                                @endif
+                                <img src="{{ $data->foto_url }}" width="200" alt="Foto Item">
                             </td>
                         </tr>
                     </table>

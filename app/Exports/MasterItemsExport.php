@@ -44,7 +44,6 @@ class MasterItemsExport implements FromCollection, WithHeadings, WithMapping
         $this->rowNumber++;
         
         $categories = $item->categories->pluck('nama')->implode(', ');
-        $harga_jual = round($item->harga_beli + ($item->harga_beli * $item->laba / 100));
 
         return [
             $this->rowNumber,
@@ -53,7 +52,7 @@ class MasterItemsExport implements FromCollection, WithHeadings, WithMapping
             $item->supplier,
             $item->harga_beli,
             $item->laba,
-            $harga_jual,
+            $item->harga_jual,
         ];
     }
 }

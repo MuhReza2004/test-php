@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Exports\MasterItemsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class MasterItemsController extends Controller
 {
@@ -85,10 +86,13 @@ class MasterItemsController extends Controller
         }
 
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $filename = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('foto'), $filename);
-            $data_item->foto = $filename;
+            // Hapus foto lama jika ada
+            if ($data_item->foto) {
+                Storage::disk('public')->delete('items/' . $data_item->foto);
+            }
+            
+            $path = $request->file('foto')->store('items', 'public');
+            $data_item->foto = basename($path);
         }
 
         $data_item->nama = $request->nama;
@@ -105,7 +109,11 @@ class MasterItemsController extends Controller
 
     public function delete($id)
     {
-        MasterItem::find($id)->delete();
+        $item = MasterItem::find($id);
+        if ($item->foto) {
+            Storage::disk('public')->delete('items/' . $item->foto);
+        }
+        $item->delete();
         return redirect('master-items');
     }
 

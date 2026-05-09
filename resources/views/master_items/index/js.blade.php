@@ -45,11 +45,8 @@
                 var data = results.data
 
                 $.each(data, function(index, item) {
-                    var harga_jual = Math.round(item.harga_beli + item.harga_beli * item.laba / 100);
                     var kode = item.kode;
-
-                    var foto_url = item.foto ? '{{asset("foto")}}/' + item.foto : 'https://via.placeholder.com/50';
-                    var html_foto = `<img src="` + foto_url + `" width="50" height="50" style="object-fit: cover;">`;
+                    var html_foto = `<img src="` + item.foto_url + `" width="50" height="50" style="object-fit: cover;">`;
 
                     var categories_html = '';
                     if (item.categories && item.categories.length > 0) {
@@ -70,7 +67,7 @@
                         categories_html,
                         item.jenis,
                         item.harga_beli,
-                        harga_jual,
+                        item.harga_jual,
                         item.supplier,
                         html_view
                     ];
