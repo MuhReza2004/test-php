@@ -76,7 +76,7 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
-        Category::find($id)->delete();
+        Category::findOrFail($id)->delete();
         return redirect('categories');
     }
 }

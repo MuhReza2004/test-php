@@ -42,11 +42,7 @@
                             @forelse($category->masterItems as $item)
                             <tr>
                                 <td>
-                                    @if($item->foto)
-                                        <img src="{{ asset('foto/'.$item->foto) }}" width="40" height="40" style="object-fit: cover;">
-                                    @else
-                                        <img src="https://via.placeholder.com/40" width="40">
-                                    @endif
+                                    <img src="{{ $item->foto_url }}" width="40" height="40" style="object-fit: cover;">
                                 </td>
                                 <td>{{ $item->kode }}</td>
                                 <td>{{ $item->nama }}</td>

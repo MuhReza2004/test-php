@@ -43,6 +43,17 @@
                             <td>{{$data->jenis}}</td>
                         </tr>
                         <tr>
+                            <th>Kategori</th>
+                            <td>:</td>
+                            <td>
+                                @forelse($data->categories as $category)
+                                    <span class="badge bg-info text-dark">{{ $category->nama }}</span>
+                                @empty
+                                    -
+                                @endforelse
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Foto</th>
                             <td>:</td>
                             <td>
@@ -51,7 +62,11 @@
                         </tr>
                     </table>
                     <a class="btn btn-info" href="{{url('master-items/form/edit')}}/{{$data->id}}">Edit</a>
-                    <a class="btn btn-danger" href="{{url('master-items/delete')}}/{{$data->id}}" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                    <form action="{{ route('master-items.delete', $data->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>

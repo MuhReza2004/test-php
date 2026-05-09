@@ -44,7 +44,7 @@ class MasterItemsController extends Controller
         if ($method == 'new') {
             $item = new MasterItem;
         } else {
-            $item = MasterItem::with('categories')->find($id);
+            $item = MasterItem::with('categories')->findOrFail($id);
         }
         $data['item'] = $item;
         $data['method'] = $method;
@@ -54,7 +54,7 @@ class MasterItemsController extends Controller
 
     public function singleView($kode)
     {
-        $data['data'] = MasterItem::where('kode', $kode)->first();
+        $data['data'] = MasterItem::with('categories')->where('kode', $kode)->firstOrFail();
         return view('master_items.single.index', $data);
     }
 
@@ -81,7 +81,7 @@ class MasterItemsController extends Controller
             $kode = str_pad($kode, 5, '0', STR_PAD_LEFT);
             sleep(3);
         } else {
-            $data_item = MasterItem::find($id);
+            $data_item = MasterItem::findOrFail($id);
             $kode = $data_item->kode;
         }
 
@@ -109,7 +109,7 @@ class MasterItemsController extends Controller
 
     public function delete($id)
     {
-        $item = MasterItem::find($id);
+        $item = MasterItem::findOrFail($id);
         if ($item->foto) {
             Storage::disk('public')->delete('items/' . $item->foto);
         }

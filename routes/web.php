@@ -28,7 +28,7 @@ Route::get('/master-items/form/{method}/{id?}', [App\Http\Controllers\MasterItem
 Route::post('/master-items/form/{method}/{id?}', [App\Http\Controllers\MasterItemsController::class, 'formSubmit']);
 
 Route::get('/master-items/view/{kode}', [App\Http\Controllers\MasterItemsController::class, 'singleView']);
-Route::get('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsController::class, 'delete']);
+Route::delete('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsController::class, 'delete'])->name('master-items.delete');
 
 use App\Http\Controllers\CategoryController;
 
@@ -39,7 +39,7 @@ Route::prefix('categories')->group(function () {
     Route::post('/form/{method}/{id?}', [CategoryController::class, 'formSubmit']);
     Route::get('/view/{id}', [CategoryController::class, 'singleView']);
     Route::get('/print-pdf/{id}', [CategoryController::class, 'printPDF']);
-    Route::get('/delete/{id}', [CategoryController::class, 'delete']);
+    Route::delete('/delete/{id}', [CategoryController::class, 'delete'])->name('categories.delete');
 });
 
 Route::get('/master-items/update-random-data', [App\Http\Controllers\MasterItemsController::class, 'updateRandomData']);

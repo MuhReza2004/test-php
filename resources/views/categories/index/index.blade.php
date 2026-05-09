@@ -81,7 +81,11 @@
                     var html_action = `
                         <a href="{{url('categories/view')}}/` + item.id + `" class="btn btn-sm btn-primary">View</a>
                         <a href="{{url('categories/form/edit')}}/` + item.id + `" class="btn btn-sm btn-info text-white">Edit</a>
-                        <a href="{{url('categories/delete')}}/` + item.id + `" class="btn btn-sm btn-danger" onclick="return confirm('Hapus kategori ini?')">Delete</a>
+                        <form action="{{ url('categories/delete') }}/` + item.id + `" method="POST" class="d-inline" onsubmit="return confirm('Hapus kategori ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
                     `;
 
                     dataTableObj.row.add([
