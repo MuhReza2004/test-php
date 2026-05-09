@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('master-items', function (Blueprint $table) {
-            //
+        Schema::table('master_items', function (Blueprint $table) {
+            $table->string('foto')->nullable()->after('jenis');
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('master-items', function (Blueprint $table) {
+        Schema::table('master_items', function (Blueprint $table) {
             //
         });
     }
