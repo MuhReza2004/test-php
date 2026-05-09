@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\MasterItem;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Exports\MasterItemsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MasterItemsController extends Controller
 {
@@ -53,6 +55,11 @@ class MasterItemsController extends Controller
     {
         $data['data'] = MasterItem::where('kode', $kode)->first();
         return view('master_items.single.index', $data);
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new MasterItemsExport, 'master-items.xlsx');
     }
 
     public function formSubmit(Request $request, $method, $id = 0)
